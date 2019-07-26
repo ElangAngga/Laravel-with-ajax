@@ -40,12 +40,12 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        $data = new Blog;
-        $data->title = $request->title;
-        $data->description = $request->description;
-        $data->save();
+        $blog = new Blog;
+        $blog->title = $request->title;
+        $blog->description = $request->description;
+        $blog->save();
 
-        return redirect('/blog');
+        return redirect()->route('awal.index');
     }
 
     /**
@@ -68,7 +68,7 @@ class BlogController extends Controller
     public function edit($id)
     {
         $blog = Blog::find($id);
-        return $blog;
+        return view('edit', ['blog'=>$blog]);
     }
 
     /**
@@ -78,9 +78,14 @@ class BlogController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $blog_id)
     {
-        //
+        $blog = Blog::find($blog_id);
+        $blog->title = $request->title;
+        $blog->description = $request->description;
+        $blog->save();
+
+        return redirect()->route('awal.index');
     }
 
     /**
@@ -91,7 +96,7 @@ class BlogController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Blog::destroy($id);
     }
 
     public function api(){
@@ -100,8 +105,8 @@ class BlogController extends Controller
         return Datatables::of($blog)
         ->addColumn('action', function($blog){
             return '<a href="#" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-eye-open"></i>show</a>' .
-                   '<a onclick="editForm('. $blog->id .')" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i>Edit</a>' .
-                   '<a onclick="deleteForm('. $blog->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i>Hapus</a>';
+                   '<a href="'.route('awal.edit', $blog->id).'" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i>Edit</a>' .
+                   '<a onclick="deleteData('. $blog->id .')" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash"></i>Hapus</a>';
         })->make(true);
     }
 }

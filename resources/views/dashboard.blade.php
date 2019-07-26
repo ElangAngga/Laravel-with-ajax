@@ -7,7 +7,7 @@
 @extends('adminlte::page')
 
 @section('title', 'Dashboard')
-
+<meta name="csrf-token" content="{{ csrf_token() }}">
 @section('content_header')
     <h1>Dashboard</h1>
 @stop
@@ -66,26 +66,23 @@
             $('.modal-title').text('Add Blog');
         }
 
-        function editForm(id){
-            save_method='edit';
-            $('input[name=_method]').val('PATCH');
-            $('#modal-form form')[0].reset();
-            $.ajax({
-                url: "{{ url('blog/awal') }}" + '/' + id + "/edit",
-                type: "GET",
-                dataType: "JSON",
-                success: function(data){
-                    $('#modal-form').modal('show');
-                    $('.modal-title').text('Edit Blog');
-
-                    $('#id').val(data.id);
-                    $('#title').val(data.title);
-                    $('#description').val(data.description);
-                },
-                error: function(){
-                    alert('Nothing Data');
-                }
-            });
+        function deleteData(id){
+            var popup = confirm("Are You Sure for Delete this Data?");
+            var csrf_token = $('meta[name="csrf-token"]').attr('content');
+            if(popup == true){
+                $.ajax({
+                    url : "{{ url('blog/awal') }}" + '/' + id,
+                    type : "POST",
+                    data : {'_method': 'DELETE', '_token' : csrf_token},
+                    success : function(data){
+                        table.ajax.reload();
+                        console.log(data);
+                    },
+                    error : function(){
+                        alert("Opps! Somethings Wrong");
+                    }
+                });
+            }
         }
     </script>
 @stop

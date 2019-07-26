@@ -1,8 +1,23 @@
-<div class="modal" id="modal-form" tabindex="1" role="dialog" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form action="{{ route('awal.store') }}" method="POST" class="form-horizontal" data-toggle="validator">
-            {{ method_field('POST') }} {{ csrf_field() }}
+{{-- resources/views/admin/dashboard.blade.php --}}
+
+@push('css')
+
+@push('js')
+
+@extends('adminlte::page')
+
+@section('title', 'Edit Page')
+
+@section('content_header')
+    <h1>Dashboard</h1>
+@stop
+
+@section('content')
+    <div class="box box-primary">
+        <div class="container-fluid">
+            <form action="{{ route('awal.update', $blog->id) }}" method="POST" class="form-horizontal" data-toggle="validator">
+            {{ csrf_field() }}
+                <input type="hidden" name="_method" value="PUT">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true"> &times; </span>
@@ -15,7 +30,7 @@
                     <div class="form-group">
                         <label for="title" class="col-md-3 control-label">Title</label>
                         <div class="col-md-6">
-                            <input type="text" name="title" id="title" class="form-control" autofocus required>
+                            <input type="text" name="title" id="title" value="{{ $blog->title }}" class="form-control" autofocus required>
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
@@ -24,7 +39,7 @@
                 <div class="form-group">
                     <label for="Description" class="col-md-3 control-label">Description</label>
                     <div class="col-md-6">
-                        <textarea name="description" id="description" cols="30" rows="10" class="form-control"></textarea>
+                        <textarea name="description" id="description" cols="30" rows="10" class="form-control">{{ $blog->description }}</textarea>
                         <span class="help-block with-errors"></span>
                     </div>
                 </div>
@@ -32,9 +47,17 @@
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary btn-save">Save</button>
                     <button type="submit" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                </div>
-                
+                </div>   
             </form>
         </div>
     </div>
-</div>
+       
+@stop
+
+@section('css')
+    <link rel="stylesheet" href="/css/admin_custom.css">
+@stop
+
+@section('js')
+    <script> console.log('Hi!'); </script>
+@stop

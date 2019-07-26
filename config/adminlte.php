@@ -170,6 +170,11 @@ return [
                 ],
             ],
         ],
+        [
+            'text' => 'TOR',
+            'url' => 'blog/awal',
+            'icon' => 'user',
+        ],
         'LABELS',
         [
             'text'       => 'Important',
